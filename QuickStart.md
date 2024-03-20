@@ -146,3 +146,38 @@ EnemyQuery = Ant->QueryPointAttachedAsync(HeroAgentHandle, AttackRange, EnemyFla
 // bind for query result
 Ant->OnQueryFinished.AddUObject(this, &ACircleSurvivors::OnEnemyInRange);
 ```
+
+## Debugging
+For **debugging** purpose there is a built-in `AntDebugDraw` command with a number parameter between **0 to 4** to visualize what's going on! 
+
+## Render Integration
+**Ant** is able to integrate with any form of rendering. if you need to render a large number (+100) of the agents with animations, UE's Skeletal mesh component won't help you much because of its poor performance! there are other options such as `Instanced Static Mesh Component` (which we used in our samples) or  even`Niagara`.
+``` cpp
+// setup ISMC
+void ARTSUnits::SetupInstancedMeshComp()
+{
+	// initialize instanced static mesh components
+	InstancedMeshComp = NewObject<UInstancedStaticMeshComponent>();
+	InstancedMeshComp->RegisterComponentWithWorld(GetWorld());
+	InstancedMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	InstancedMeshComp->SetStaticMesh(UnitMesh);
+}
+```
+then in the `Tick()` function you can render the agents
+``` cpp 
+void ARTSUnits::RenderUnits()
+{
+	// Ant is a world subsystem
+	auto *antSubsysem = GetWorld()->GetSubsystem<UAntSubsystem>();
+
+	// clear all instances
+	InstancedMeshComp->ClearInstances();
+
+	// iterate over agents
+	for (const auto &agent : antSubsysem->GetUnderlyingAgentsList())
+	{
+		const FVector center(agent.GetLocationLerped());
+		InstancedMeshComp->AddInstance(FTransform(FRotator::ZeroRotator, center, FVector::One()));
+	}
+}
+```
