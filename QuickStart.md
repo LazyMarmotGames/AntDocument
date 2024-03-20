@@ -98,7 +98,7 @@ If you have a big flat map without any obstacle and corridor, you can fully igno
    **multi-threaded** and are **parallel**, this way **Ant** is able to utilize CPU power and handle a **large number** of the agents on gaming CPUs.
 
 ## 2- Obstacle
-![Obstacles](Assets/obstacles.png)
+![Obstacles](Assets/Obstacles.png)
 
 An **obstacle** is an array of **line segments**. they are **static/stationary** units in the **Ant**. their main task is to prevent the agents from passing trough. walls, doors, buildings are all examples of obstacles.
 You can create an obstacle like this:
