@@ -59,7 +59,7 @@ FOnAntEvents OnMovementMissingVelocity;
 // Will be called whenever an in-progress movement get canceled by user itself or whenever its followee agent is not valid anymore.
 FOnAntEvents OnMovementCanceled;
 ```
-Agents can also follow each-other but there is no path finding or collision avoidance this way. check`CircleSurvivors`sample for more info:
+Agents can also follow each-other but there is no path finding or obstacle avoidance this way. check`CircleSurvivors`sample for more info:
  ``` cpp
 // follow another agent
 Ant->FollowAgent(FollowerAgentHandle, FolloweeAgentHandle, MaxSpeed, FolloweeRadius);
