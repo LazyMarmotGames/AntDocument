@@ -122,6 +122,7 @@ Ant->RemoveObstacle(ObstacleHandle);
 
 ## 3- Query
 ![Query](Assets/query.png)
+
 Finding enemies around towers, attacking close units or even selecting units on the screen are all uses of the **query**. **Ant** uses a **grid** as its underlying spatial partitioning system.  queries are all proceed through this grid.
 There are a plenty of shapes which are supported for queries. also an **asynchronous** version is available which works best when you have a large number of query per frame!
 **Synchronous** queries will give you the result just right after calling:
