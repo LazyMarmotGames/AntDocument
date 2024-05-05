@@ -11,11 +11,11 @@ void OnVelocityTimeout(float Delta, const TArray<FAntHandle>& Agents)
 		// UE defaults navigation system
 		auto *navSys = UNavigationSystemV1::GetCurrent(GetWorld());
 
-		// get curretn agent goal location
-		const FVector goalLoc(FVector2D(ant->GetAgentMovement(agent).GetTargetLocation()), 0);
+		// get agent destination location
+		const FVector destLocation(FVector2D(ant->GetAgentMovement(agent).GetTargetLocation()), 0);
 
 		// find a fresh new path to that location
-		const auto *path = navSys->FindPathToLocationSynchronously(GetWorld(), FVector(ant->GetAgentData(agent).GetLocationLerped()), goalLoc);
+		const auto *path = navSys->FindPathToLocationSynchronously(GetWorld(), FVector(ant->GetAgentData(agent).GetLocationLerped()), destLocation);
 
 		// move the agent through new path
 		if (path && path->IsValid())
