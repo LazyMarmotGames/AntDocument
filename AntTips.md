@@ -35,7 +35,7 @@ A quick and dirty solution could be that we define the radius of the agents as 0
 
 ![navmeshobs](https://github.com/LazyMarmotGames/AntDocument/blob/main/Assets/extra-radius.jpg)
 
-C++ sample code to generate this types of obstacles from navigation mesh:
+C++ sample code to generate this type of obstacle from navigation mesh:
 ```cpp
 // generate segments list from navigation mesh
 TArray<TPair<FVector, FVector>> outSegments;
