@@ -37,8 +37,11 @@ A quick and dirty solution could be that we define the radius of the agents as 0
 
 C++ sample code to generate this types of obstacles from navigation mesh:
 ```cpp
+// generate segments list from navigation mesh
 TArray<TPair<FVector, FVector>> outSegments;
 UAntUtil::GetNavMeshSegments(GetWorld(), outSegments);
+
+// add segments list as obstacles to Ant
 GetWorld()->GetSubsystem<UAntSubsystem>()->AddObstacleList(outSegments, ObstacleFlag, true);
 ```
 
