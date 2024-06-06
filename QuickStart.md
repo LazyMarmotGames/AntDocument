@@ -149,7 +149,7 @@ Ant->OnQueryFinished.AddUObject(this, &ACircleSurvivors::OnEnemyInRange);
 ```
 
 ## Debugging
-For **debugging** purpose there is a built-in `AntDebugDraw` command with a number parameter between **0 to 4** to visualize what's going on! 
+For **debugging** purpose there is a built-in `Ant.DebugDraw` command with a number parameter between **0 to 4** to visualize what's going on! 
 
 ## Profiling
 Thorough `stat Ant`, you are able to see some usefull stats at runtime. 
