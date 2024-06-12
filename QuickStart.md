@@ -40,6 +40,10 @@ We assume we have e nice path and lets see how to move an agent through the path
 ``` cpp
 // move the agent toward the path
 Ant->MoveAgentTo(AgentHandle, PathPoints, MaxSpeed, TargetRadius, PathPointsRadius);
+
+// or higher level version with auto path-finding.
+UAntUtil::MoveAgentToLocation(UWorld *World, TArray<FAntHandle> &AgentsToMove, const TArray<FVector> &Locations, float MaxSpeed, float TargetAcceptanceRadius, float PathAcceptanceRadius,
+		const FNavCorridorParams, float MissingVelocityTimeout, AActor *PathfindingContext, TSubclassOf<UNavigationQueryFilter> FilterClass);
 ```
 ![Move by path](Assets/move-by-path.png)
 
@@ -79,11 +83,16 @@ Ant->RemoveAgentMovement(AgentHandle);
 ```
 **Ant** also supports **corridor**! to move the agents along a **corridor** we have to prepare some data beforehand such as **path portals** and **portal alpha** per agent. we also utilize `NavCorridor` plugin during the process.
 ``` cpp
+// high-level usage
+void UAntUtil::MoveAgentsToLocationsByCorridor(UWorld *World, TArray<FAntHandle> &AgentsToMove, const TArray<FVector> &Locations, float MaxSpeed, float TargetAcceptanceRadius, float PathAcceptanceRadius,
+		const FNavCorridorParams &Corridor, float MissingVelocityTimeout, AActor *PathfindingContext, TSubclassOf<UNavigationQueryFilter> FilterClass);
+
+// low-level usage with more control 
 // Get lerp alpha used by the path portals
-void GetCorridorPortalAlpha(const TArray<FVector> &SourceLocations, const FVector &DestLocation, TArray<float> &ResultAlpha);
+void UAntUtil::GetCorridorPortalAlpha(const TArray<FVector> &SourceLocations, const FVector &DestLocation, TArray<float> &ResultAlpha);
 
 // Adjust raw path by the given portals
-void AdjustPathByPortal(const TArray<FNavCorridorPortal> &Portals, float PortalAlpha, TArray<FVector> &ResultPath);
+void UAntUtil::AdjustPathByPortal(const TArray<FNavCorridorPortal> &Portals, float PortalAlpha, TArray<FVector> &ResultPath);
 ```
 ![Corridor](Assets/corridor.png)
 
