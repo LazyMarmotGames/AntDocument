@@ -1,10 +1,21 @@
-# Ant - Quick Start Guide (C++)
-There are **three main concept** in the **Ant**.
 
- ## 1- Agent
+# Ant - C++
+A minimal guide on how to use **Ant** through **C++**.
+## Index
+- [Agent](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#agent)
+  - [Path & Movement](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#path--movement)
+    - [Path Follower Types](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#path-follower-types)
+    - [Path Replanning](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#path-replanning)
+- [Obstacle](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#obstacle)
+- [Query](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#query)
+- [Debugging](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#debugging)
+- [Profiling](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#profiling)
+- [Render Integration](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#render-integration)
+
+ ## Agent
 ![A group of agents!](Assets/agents.png)
 
- Agents are mobile units in the **Ant**. They are just simple **circles** which can **move** or **collide** with other agents and obstacles. each agent has a bunch of properties such as **radius**, **location**, **speed** and so on. 
+ Agents are mobile units in **Ant**. They are just simple **circles** which can **move** and **collide** with other agents and obstacles. each agent has a bunch of properties such as **radius**, **location**, **speed** and so on. 
  
 You can create an agent like this:
 ``` cpp
@@ -22,36 +33,43 @@ const auto AgentHandle = Ant->AddAgent(AgnetLocation, AgentRadius, AgentFaceAngl
 // access the agent data using its handle and change its property
 Ant->GetMutableAgentData(AgentHandle).TurnRate = 0.3f;
 ```
-**Note:** each object inside the Ant has e **unique handle** and you should keep it somewhere for later access.
+**Note:** each object inside **Ant** has e **unique handle** and you should keep it somewhere for later access.
 
 Removing an agent is easy as adding it:
 ``` cpp
 // Remove an agent by its handle
 Ant->RemoveAgent(AgentHandle);
 ```
-### Movement
+### Path & Movement
 As we said, agents are mobile units so we can move them! to move an agent we have several choices, first and simplest of which is moving by **preferred velocity** like this:
 ``` cpp
 // Move an agent by the given velocity
 Ant->GetMutableAgentData(AgentHandle).PreferredVelocity = {10.f, 0.f};
 ```
-For higher-level scenarios we can use a **path** which is simply an array of consecutive points. to find a path from a location to another location we have several choices. if you are  using UE's default navigation system, you can query the path by `UNavigationSystem`. there are some sample code about this inside the `RTSUnits` sample. 
-We assume we have e nice path and lets see how to move an agent through the path. its easy!
+For higher-level scenarios we can use a **path** which is simply an array of consecutive **portals** to move the agents. to create a path there are several ways:
+```cpp
+// Create a permanent shared path by given locations.
+const auto Path = UAntUtil::CreateSharedPath(GetWorld(), StartLocation, EndLocation, 300);
+
+// Create a permanent shared path by Spline.
+const auto Path = UAntUtil::CreateSharedPathBySpline(GetWorld(), SplineComponent, 300);
+```
+**Note:** shared paths are **permanent** paths and must be removed at a later time with a direct call to `Ant->RemovePath()`.
+ 
+ We assume we have e nice **path** and lets see how to move an agent through the path. its easy!
 ``` cpp
 // move the agent toward the path
-Ant->MoveAgentTo(AgentHandle, PathPoints, MaxSpeed, TargetRadius, PathPointsRadius);
-
-// or higher level version with auto path-finding.
-UAntUtil::MoveAgentToLocation(UWorld *World, TArray<FAntHandle> &AgentsToMove, const TArray<FVector> &Locations, float MaxSpeed, float TargetAcceptanceRadius, float PathAcceptanceRadius,
-		const FNavCorridorParams, float MissingVelocityTimeout, AActor *PathfindingContext, TSubclassOf<UNavigationQueryFilter> FilterClass);
+Ant->MoveAgentByPath(AgentHandle, Path, EAntPathFollowerType::FlowField, 10, 0, 70);
 ```
-![Move by path](Assets/move-by-path.png)
+Yo can also move agents with a single function call (These functions automatically create and destroy the path for you):
+```cpp
+// Move an agent to the given location.
+UAntUtil::MoveAgentToLocation(GetWorld(), AgentHandle, Location, 10, 0, 70, EAntPathFollowerType::FlowField, 300);
 
- - **Red** circle is the **agent**
- - **Blue** circles are the **path points**
- - **Cyan** circle is the **target** with its radius
- - **Purple** line is the **path**
-
+// same as MoveAgentToLocation() but can move multiple agents to different locations.
+// It also computes corridors in parallel.
+UAntUtil::MoveAgentsToLocations(...);
+```
 To handle and get notify about movement events just make sure you bind to each of this delegates:
  ``` cpp
 // Will be called whenever an agent reached its target location.
@@ -70,7 +88,7 @@ Ant->FollowAgent(FollowerAgentHandle, FolloweeAgentHandle, MaxSpeed, FolloweeRad
 ```
 ![Follow agent](Assets/follower.png)
 
-some of the movement properties are editable during movement such as **MaxSpeed** or **TargetRadius**. just make sure there is an in-progress movement on the agent.
+some of the movement properties are editable during movement such as **MaxSpeed** or **TargetRadius**. just make sure there is a valid in-progress movement on the agent.
 ``` cpp
 // edit movement data of the given agent.
 if (Ant->IsValidMovement(AgentHandle))
@@ -81,35 +99,40 @@ or cancel/remove an in-progress movement:
 // cancel the movement
 Ant->RemoveAgentMovement(AgentHandle);
 ```
-**Ant** also supports **corridor**! to move the agents along a **corridor** we have to prepare some data beforehand such as **path portals** and **portal alpha** per agent. we also utilize `NavCorridor` plugin during the process.
-``` cpp
-// high-level usage
-void UAntUtil::MoveAgentsToLocationsByCorridor(UWorld *World, TArray<FAntHandle> &AgentsToMove, const TArray<FVector> &Locations, float MaxSpeed, float TargetAcceptanceRadius, float PathAcceptanceRadius,
-		const FNavCorridorParams &Corridor, float MissingVelocityTimeout, AActor *PathfindingContext, TSubclassOf<UNavigationQueryFilter> FilterClass);
+### Path Follower Types
+There are different ways to move an agent along a path. in **Ant** we define it through `EAntPathFollowerType`. at the there are two types of path follower:
 
-// low-level usage with more control 
-// Get lerp alpha used by the path portals
-void UAntUtil::GetCorridorPortalAlpha(const TArray<FVector> &SourceLocations, const FVector &DestLocation, TArray<float> &ResultAlpha);
+**1- Waypoint**
 
-// Adjust raw path by the given portals
-void UAntUtil::AdjustPathByPortal(const TArray<FNavCorridorPortal> &Portals, float PortalAlpha, TArray<FVector> &ResultPath);
-```
-![Corridor](Assets/corridor.png)
+![Waypoints](Assets/move-by-path.png)
 
-For a working sample check `RTSUnits`.
-If you have a big flat map without any obstacle and corridor, you can fully ignore this feature.
+This type is useful when you need the agent to move exactly in a linear path.
+ - **Red** circle is the **agent**
+ - **Blue** circles are the **path points**
+ - **Cyan** circle is the **target** with its radius
+ - **Purple** line is the **path**
+
+**2- Flowfield**
+
+![Flowfields](Assets/flowfield.png)
+ 
+This type is useful when you need a wider path and your agent can be anywhere along that path. there is also a comparison [video here](https://www.youtube.com/watch?v=Oi7KzYUVXMk).
+
+### Path Replanning
+**Ant** keeps track of paths in case of **dynamic blocking obstacles**, so whenever a dynamic obstacle blocks a path, **Ant** detects it and **re-plans** the path automatically. 
+
 #### Notes:
- - Adding/Removing agents are very optimized in the **Ant**, so don't
+ - Adding/Removing agents are very optimized in **Ant**, so don't
    worry about add or remove a bunch of them in a single frame!
  - Agents will go to **sleep** whenever there is no active movement or
    collision. **sleep/idle** agents have very little CPU overhead.
  - Most of the collision and movement algorithms are implemented
-   **multi-threaded** and are **parallel**, this way **Ant** is able to utilize CPU power and handle a **large number** of the agents on gaming CPUs.
+   **multi-threaded** and are **parallel**, this way **Ant** is able to utilize CPU power to handle a **large number** of the agents on gaming CPUs.
 
-## 2- Obstacle
+## Obstacle
 ![Obstacles](Assets/Obstacles.png)
 
-An **obstacle** is an array of **line segments**. they are **static/stationary** units in the **Ant**. their main task is to prevent the agents from passing trough. walls, doors, buildings are all examples of obstacles.
+An **obstacle** is an array of **line segments**. they are **static/stationary** units in **Ant**. their main task is to prevent the agents from passing trough. walls, doors, buildings are all examples of obstacles.
 You can create an obstacle like this:
 ``` cpp
 // Ant is a world subsystem. 
@@ -124,6 +147,7 @@ You can also remove an obstacle just like agents:
 // Remove an obstacle by its handle
 Ant->RemoveObstacle(ObstacleHandle);
 ```
+**Ant** also supports dynamic obstacles, so if you change the navigation mesh during runtime, **Ant** will detect it and update the obstacles.
 #### Notes:
  - Adding/Removing obstacles are very optimized in the **Ant**, so don't
    worry about add or remove a bunch of them in a single frame!
@@ -161,9 +185,11 @@ Ant->OnQueryFinished.AddUObject(this, &ACircleSurvivors::OnEnemyInRange);
 For **debugging** purpose there is a built-in `Ant.DebugDraw` command with a number parameter between **0 to 4** to visualize what's going on! 
 
 ## Profiling
-Thorough `stat Ant`, you are able to see some usefull stats at runtime. 
+Thorough `stat Ant`, you are able to see some useful stats at runtime. 
 
 ## Render Integration
+![Render](Assets/render-integration.jpg)
+
 **Ant** is able to integrate with any form of rendering. if you need to render a large number (+100) of the agents with animations, UE's Skeletal mesh component won't help you much because of its poor performance! there are other options such as `Instanced Static Mesh Component` (which we used in our samples) or  even`Niagara`.
 ``` cpp
 // setup ISMC
@@ -194,3 +220,4 @@ void ARTSUnits::RenderUnits()
 	}
 }
 ```
+
