@@ -119,7 +119,10 @@ This type is useful when you need the agent to move exactly in a linear path.
 This type is useful when you need a wider path and your agent can be anywhere along that path. there is also a comparison [video here](https://www.youtube.com/watch?v=Oi7KzYUVXMk).
 
 ### Path Replanning
-**Ant** keeps track of paths in case of **dynamic blocking obstacles**, so whenever a dynamic obstacle blocks a path, **Ant** detects it and **re-plans** the path automatically. 
+**Ant** keeps track of paths in case of **dynamic blocking obstacles**, so whenever a dynamic obstacle blocks a path, **Ant** detects it and **re-plans** the path automatically. to enable this feature:
+
+![RuntimeGen](Assets/runtime-gen.jpg)
+![NavData](Assets/nav-data.jpg)
 
 #### Notes:
  - Adding/Removing agents are very optimized in **Ant**, so don't
