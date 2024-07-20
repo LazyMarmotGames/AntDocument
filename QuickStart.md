@@ -6,7 +6,6 @@ A minimal guide on how to use **Ant** through **C++**.
   - [Path & Movement](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#path--movement)
     - [Path Follower Types](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#path-follower-types)
     - [Path Replanning](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#path-replanning)
-- [Obstacle](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#obstacle)
 - [Query](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#query)
 - [Debugging](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#debugging)
 - [Profiling](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#profiling)
@@ -15,7 +14,7 @@ A minimal guide on how to use **Ant** through **C++**.
  ## Agent
 ![A group of agents!](Assets/agents.png)
 
- Agents are mobile units in **Ant**. They are just simple **circles** which can **move** and **collide** with other agents and obstacles. each agent has a bunch of properties such as **radius**, **location**, **speed** and so on. 
+ Agents are mobile units in **Ant**. They are just simple vertical **cylinder** which can **move** and **collide** with other agents and obstacles. each agent has a bunch of properties such as **radius**, **height**, **location**, **speed** and so on. 
  
 You can create an agent like this:
 ``` cpp
@@ -23,19 +22,19 @@ You can create an agent like this:
 auto *Ant = GetWorld()->GetSubsystem<UAntSubsystem>();
 
 // Add a new agent to the Ant.
-Ant->AddAgent(AgnetLocation, AgentRadius, AgentFaceAngle, AgentFlag);
+Ant->AddAgent(AgnetLocation, AgentRadius, AgentHeight, AgentFaceAngle, AgentFlag);
 ```
 or alter its properties right after adding it:
 ``` cpp
 // Add a new agent to the Ant and keep its handle.
-const auto AgentHandle = Ant->AddAgent(AgnetLocation, AgentRadius, AgentFaceAngle, AgentFlag);
+const auto AgentHandle = Ant->AddAgent(AgnetLocation, AgentRadius, AgentHeight, AgentFaceAngle, AgentFlag);
 
 // access the agent data using its handle and change its property
 Ant->GetMutableAgentData(AgentHandle).TurnRate = 0.3f;
 ```
 **Note:** each object inside **Ant** has e **unique handle** and you should keep it somewhere for later access.
 
-Removing an agent is easy as adding it:
+Removing an agent is as easy as adding it:
 ``` cpp
 // Remove an agent by its handle
 Ant->RemoveAgent(AgentHandle);
@@ -44,7 +43,7 @@ Ant->RemoveAgent(AgentHandle);
 As we said, agents are mobile units so we can move them! to move an agent we have several choices, first and simplest of which is moving by **preferred velocity** like this:
 ``` cpp
 // Move an agent by the given velocity
-Ant->GetMutableAgentData(AgentHandle).PreferredVelocity = {10.f, 0.f};
+Ant->GetMutableAgentData(AgentHandle).PreferredVelocity = {10.f, 0.f, 0.0f};
 ```
 For higher-level scenarios we can use a **path** which is simply an array of consecutive **portals** to move the agents. to create a path there are several ways:
 ```cpp
@@ -63,12 +62,9 @@ Ant->MoveAgentByPath(AgentHandle, Path, EAntPathFollowerType::FlowField, 10, 0, 
 ```
 Yo can also move agents with a single function call (These functions automatically create and destroy the path for you):
 ```cpp
-// Move an agent to the given location.
-UAntUtil::MoveAgentToLocation(GetWorld(), AgentHandle, Location, 10, 0, 70, EAntPathFollowerType::FlowField, 300);
-
-// same as MoveAgentToLocation() but can move multiple agents to different locations.
-// It also computes corridors in parallel.
-UAntUtil::MoveAgentsToLocations(...);
+// Move agents to the given locations.
+// This function is very efficient when used with multiple agents. it can process them in parallel.
+UAntUtil::MoveAgentsToLocations(GetWorld(), AgentHandle, Location, 10, 0, 70, EAntPathFollowerType::FlowField, 300);
 ```
 To handle and get notify about movement events just make sure you bind to each of this delegates:
  ``` cpp
@@ -132,35 +128,11 @@ This type is useful when you need a wider path and your agent can be anywhere al
  - Most of the collision and movement algorithms are implemented
    **multi-threaded** and are **parallel**, this way **Ant** is able to utilize CPU power to handle a **large number** of the agents on gaming CPUs.
 
-## Obstacle
-![Obstacles](Assets/Obstacles.png)
-
-An **obstacle** is an array of **line segments**. they are **static/stationary** units in **Ant**. their main task is to prevent the agents from passing trough. walls, doors, buildings are all examples of obstacles.
-You can create an obstacle like this:
-``` cpp
-// Ant is a world subsystem. 
-auto *Ant = GetWorld()->GetSubsystem<UAntSubsystem>();
-
-// Add a new obstacle to the Ant.
-Ant->AddObstacle(SegmentStart, SegmentEnd, Flags);
-```
-There are a bunch of overload for this function to adding more complex shapes such as polygons. 
-You can also remove an obstacle just like agents:
-``` cpp
-// Remove an obstacle by its handle
-Ant->RemoveObstacle(ObstacleHandle);
-```
-**Ant** also supports dynamic obstacles, so if you change the navigation mesh during runtime, **Ant** will detect it and update the obstacles.
-#### Notes:
- - Adding/Removing obstacles are very optimized in the **Ant**, so don't
-   worry about add or remove a bunch of them in a single frame!
-  - An obstacle in any form and shape is not a **solid shape**. they are just **line segments**.
-
 ## Query
 ![Query](Assets/query.png)
 
-Finding enemies around towers, attacking close units or even selecting units on the screen are all uses of the **query**. **Ant** uses a **grid** as its underlying spatial partitioning system.  queries are all proceed through this grid.
-There are a plenty of shapes which are supported for queries. also an **asynchronous** version is available which works best when you have a large number of query per frame!
+Finding enemies around towers, attacking close units or even selecting units on the screen are all uses of the **query**. **Ant** uses a **grid** as its underlying spatial partitioning system. queries are all proceed through this grid.
+There are a plenty of modes which are supported for queries. also an **asynchronous** version is available which works best when you have a large number of query per frame!
 **Synchronous** queries will give you the result just right after calling:
 ``` cpp
 // Ant is a world subsystem. 
@@ -168,7 +140,7 @@ auto *Ant = GetWorld()->GetSubsystem<UAntSubsystem>();
 
 // 
 TArray<FAntContactInfo> QueryResult;
-Ant->QueryPoint(QueryCenter, QueryRadius, Flags, QueryResult);
+Ant->QueryCylinder(CylinderCenter, CylinderRadius, CylinderHeight, Flags, QueryResult);
 
 // iterate over query result
 for (const auto &ContactInfo : QueryResult)
@@ -178,7 +150,7 @@ Result of the asynchronous versions will be ready at the next frame:
  ``` cpp
 // we can query close enemies around our hero by attach a point query on its agent
 // we can also use normal query but async queries are much more efficent
-EnemyQuery = Ant->QueryPointAttachedAsync(HeroAgentHandle, AttackRange, EnemyFlag, AttackCooldown);
+EnemyQuery = Ant->QueryCylinderAttachedAsync(HeroAgentHandle, AttackRange, AttackHeight, EnemyFlag, AttackCooldown);
 
 // bind for query result
 Ant->OnQueryFinished.AddUObject(this, &ACircleSurvivors::OnEnemyInRange);
