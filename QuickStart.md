@@ -6,7 +6,6 @@ A minimal guide on how to use **Ant** through **C++**.
   - [Path & Movement](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#path--movement)
     - [Path Follower Types](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#path-follower-types)
     - [Path Replanning](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#path-replanning)
-- [Obstacle](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#obstacle)
 - [Query](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#query)
 - [Debugging](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#debugging)
 - [Profiling](https://github.com/LazyMarmotGames/AntDocument/edit/main/QuickStart.md#profiling)
@@ -131,30 +130,6 @@ This type is useful when you need a wider path and your agent can be anywhere al
    collision. **sleep/idle** agents have very little CPU overhead.
  - Most of the collision and movement algorithms are implemented
    **multi-threaded** and are **parallel**, this way **Ant** is able to utilize CPU power to handle a **large number** of the agents on gaming CPUs.
-
-## Obstacle
-![Obstacles](Assets/Obstacles.png)
-
-An **obstacle** is an array of **line segments**. they are **static/stationary** units in **Ant**. their main task is to prevent the agents from passing trough. walls, doors, buildings are all examples of obstacles.
-You can create an obstacle like this:
-``` cpp
-// Ant is a world subsystem. 
-auto *Ant = GetWorld()->GetSubsystem<UAntSubsystem>();
-
-// Add a new obstacle to the Ant.
-Ant->AddObstacle(SegmentStart, SegmentEnd, Flags);
-```
-There are a bunch of overload for this function to adding more complex shapes such as polygons. 
-You can also remove an obstacle just like agents:
-``` cpp
-// Remove an obstacle by its handle
-Ant->RemoveObstacle(ObstacleHandle);
-```
-**Ant** also supports dynamic obstacles, so if you change the navigation mesh during runtime, **Ant** will detect it and update the obstacles.
-#### Notes:
- - Adding/Removing obstacles are very optimized in the **Ant**, so don't
-   worry about add or remove a bunch of them in a single frame!
-  - An obstacle in any form and shape is not a **solid shape**. they are just **line segments**.
 
 ## Query
 ![Query](Assets/query.png)
