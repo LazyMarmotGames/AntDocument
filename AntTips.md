@@ -26,23 +26,3 @@ void OnVelocityTimeout(float Delta, const TArray<FAntHandle>& Agents)
 	}
 }
 ```
-
-### 2- Auto generate obstacles from navigation mesh.
-![navmeshobs](https://github.com/LazyMarmotGames/AntDocument/blob/main/Assets/auto-gen-obs.jpg)
-
-Making obstacles with code or blueprint is a time consuming task. Ant in its new version can build obstacles directly from navigation mesh! in the process of adding this feature to Ant, we encountered a challenge that caused agents to behave as if they had an unwanted extra radius.
-A quick and dirty solution could be that we define the radius of the agents as 0 when generating the navigation mesh. But this solution would cause problems in the long run. another better but more complicated solution was to define obstacles that would ignore the radius of the agents and only count their center. We did this and the output was great.
-
-![navmeshobs](https://github.com/LazyMarmotGames/AntDocument/blob/main/Assets/extra-radius.jpg)
-
-C++ sample code to generate this type of obstacle from navigation mesh:
-```cpp
-// generate segments list from navigation mesh
-TArray<TPair<FVector, FVector>> outSegments;
-UAntUtil::GetNavMeshSegments(GetWorld(), outSegments);
-
-// add segments list as obstacles to Ant
-GetWorld()->GetSubsystem<UAntSubsystem>()->AddObstacleList(outSegments, ObstacleFlag, true);
-```
-
-There is also a BP node `AddObstaclesFromNavmesh` that do the same through blueprint.
