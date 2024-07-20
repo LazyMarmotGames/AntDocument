@@ -2,15 +2,15 @@
 # Ant - C++
 A minimal guide on how to use **Ant** through **C++**.
 ## Index
-- [Agent](https://github.com/LazyMarmotGames/AntDocument/main/QuickStart.md#agent)
-  - [Path & Movement](https://github.com/LazyMarmotGames/AntDocument/main/QuickStart.md#path--movement)
-    - [Path Follower Types](https://github.com/LazyMarmotGames/AntDocument/main/QuickStart.md#path-follower-types)
-    - [Path Replanning](https://github.com/LazyMarmotGames/AntDocument/main/QuickStart.md#path-replanning)
-- [Obstacle](https://github.com/LazyMarmotGames/AntDocument/main/QuickStart.md#obstacle)
-- [Query](https://github.com/LazyMarmotGames/AntDocument/main/QuickStart.md#query)
-- [Debugging](https://github.com/LazyMarmotGames/AntDocument/main/QuickStart.md#debugging)
-- [Profiling](https://github.com/LazyMarmotGames/AntDocument/main/QuickStart.md#profiling)
-- [Render Integration](https://github.com/LazyMarmotGames/AntDocument/main/QuickStart.md#render-integration)
+- [Agent](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#agent)
+  - [Path & Movement](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#path--movement)
+    - [Path Follower Types](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#path-follower-types)
+    - [Path Replanning](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#path-replanning)
+- [Obstacle](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#obstacle)
+- [Query](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#query)
+- [Debugging](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#debugging)
+- [Profiling](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#profiling)
+- [Render Integration](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#render-integration)
 
  ## Agent
 ![A group of agents!](Assets/agents.png)
