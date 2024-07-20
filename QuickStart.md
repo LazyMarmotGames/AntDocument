@@ -156,7 +156,7 @@ Ant->RemoveObstacle(ObstacleHandle);
    worry about add or remove a bunch of them in a single frame!
   - An obstacle in any form and shape is not a **solid shape**. they are just **line segments**.
 
-## 3- Query
+## Query
 ![Query](Assets/query.png)
 
 Finding enemies around towers, attacking close units or even selecting units on the screen are all uses of the **query**. **Ant** uses a **grid** as its underlying spatial partitioning system.  queries are all proceed through this grid.
