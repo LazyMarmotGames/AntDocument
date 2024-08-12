@@ -10,7 +10,7 @@ A minimal guide on how to use **Ant** through **C++**.
 - [Debugging](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#debugging)
 - [Profiling](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#profiling)
 - [Render Integration](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#render-integration)
-- [Q&A](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#qa)
+- [Frequently Asked Questions](https://github.com/LazyMarmotGames/AntDocument/blob/main/QuickStart.md#frequently-Asked-questions)
 
  ## Agent
 ![A group of agents!](Assets/agents.png)
@@ -197,7 +197,7 @@ void ARTSUnits::RenderUnits()
 }
 ```
 
-## Q&A
+## Frequently Asked Questions
 **Q**- What is **[Acceleration \ Deceleration](https://en.wikipedia.org/wiki/Acceleration)** and how is it used in Ant?
 
 **A**- **[Acceleration](https://en.wikipedia.org/wiki/Acceleration)** is the [rate](https://en.wikipedia.org/wiki/Rate_(mathematics) "Rate (mathematics)") of change of the [velocity](https://en.wikipedia.org/wiki/Velocity "Velocity") of an object with respect to time.  whenever you move an agent through a path, there are 3 parameters that determine how fast the agent moves and how fast it stops at the end of the path.
