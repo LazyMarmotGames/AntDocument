@@ -208,6 +208,8 @@ void ARTSUnits::RenderUnits()
 - Deceleration: 10
 ![Acceleration](Assets/acceleration.jpg)
 
+**Note:** Acceleration/Deceleration should always be equal to or less than MaxSpeed.
+
 ### Q- I can't find Ant World Settings!?
 
 **A**-
