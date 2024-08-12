@@ -207,3 +207,6 @@ void ARTSUnits::RenderUnits()
 - Acceleration: 10
 - Deceleration: 10
 ![Acceleration](Assets/acceleration.jpg)
+
+**Q**- I can't find Ant World Settings!?
+![WS](Assets/world-settings.jpg) ![WS2](Assets/world-settings2.jpg)
