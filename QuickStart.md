@@ -218,3 +218,15 @@ void ARTSUnits::RenderUnits()
 ### Q- Is the example project also available in Blueprints?
 
 **A**- Yes!
+
+### Q- Is there an agent.GetRotation() for setting mesh instances?
+
+**A**-
+``` cpp
+// current agent face angle (radian)
+Ant->GetAgentData(AgentHandle).FaceAngle;
+
+// final (target) agent face angle (radian)
+// agent will interpolate from current FaceAngle to this value by TurnRate
+Ant->GetAgentData(AgentHandle).FinalFaceAngle;
+```
