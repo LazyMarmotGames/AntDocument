@@ -198,7 +198,7 @@ void ARTSUnits::RenderUnits()
 ```
 
 ## Frequently Asked Questions
-**Q**- What is **[Acceleration \ Deceleration](https://en.wikipedia.org/wiki/Acceleration)** and how is it used in Ant?
+### Q- What is **[Acceleration \ Deceleration](https://en.wikipedia.org/wiki/Acceleration)** and how is it used in Ant?
 
 **A**- **[Acceleration](https://en.wikipedia.org/wiki/Acceleration)** is the [rate](https://en.wikipedia.org/wiki/Rate_(mathematics) "Rate (mathematics)") of change of the [velocity](https://en.wikipedia.org/wiki/Velocity "Velocity") of an object with respect to time.  whenever you move an agent through a path, there are 3 parameters that determine how fast the agent moves and how fast it stops at the end of the path.
 **(MaxSpeed, Acceleration, Deceleration)**
@@ -208,11 +208,11 @@ void ARTSUnits::RenderUnits()
 - Deceleration: 10
 ![Acceleration](Assets/acceleration.jpg)
 
-**Q**- I can't find Ant World Settings!?
+### Q- I can't find Ant World Settings!?
 
 **A**-
 ![WS](Assets/world-settings.jpg) ![WS2](Assets/world-settings2.jpg)
 
-**Q**- Is the example project also available in Blueprints?
+### Q- Is the example project also available in Blueprints?
 
 **A**- Yes!
