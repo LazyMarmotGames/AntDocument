@@ -212,3 +212,7 @@ void ARTSUnits::RenderUnits()
 
 **A**-
 ![WS](Assets/world-settings.jpg) ![WS2](Assets/world-settings2.jpg)
+
+**Q**- Is the example project also available in Blueprints?
+
+**A**- Yes!
