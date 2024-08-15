@@ -157,6 +157,20 @@ EnemyQuery = Ant->QueryCylinderAttachedAsync(HeroAgentHandle, AttackRange, Attac
 Ant->OnQueryFinished.AddUObject(this, &ACircleSurvivors::OnEnemyInRange);
 ```
 
+**Note:** What you get as an asynchronous query result is query handle itself, not the contacts. so first you need to get the query data then extract the contacts from it:
+``` cpp
+// listen for EnemyQuery
+for (const auto &handle : HandleList)
+{
+	// get query result
+	auto &queryResult = antSubsysem->GetAsyncQueryData(handle).Result;
+
+	// iterate over contacts
+	for (const auto &it : queryResult)
+		// TODO
+}
+```
+
 ## Debugging
 For **debugging** purpose there is a built-in `Ant.DebugDraw` command with a number parameter between **0 to 4** to visualize what's going on! 
 
