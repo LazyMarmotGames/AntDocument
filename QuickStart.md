@@ -253,4 +253,4 @@ Ant->GetAgentData(AgentHandle).FinalFaceAngle;
 ``` cpp
 uint8 bCanPierce : 1;
 ```
-![Pierce](Assets/Pierce.jpg)
+![piercing](Assets/piercing.jpg)
