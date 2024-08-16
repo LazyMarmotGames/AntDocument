@@ -246,3 +246,11 @@ Ant->GetAgentData(AgentHandle).FaceAngle;
 // agent will interpolate from current FaceAngle to this value by TurnRate
 Ant->GetAgentData(AgentHandle).FinalFaceAngle;
 ```
+
+### Q- What about piercing? How exactly does that work? I can't see much differente enabling it?
+
+**A**- This prevents agents from getting stuck in narrow entrances. If the angle is equal or greater than to the pierce angle, the agent ignore collision and penetrates. If you do not have such conditions in your map, it is better to disable it. 
+``` cpp
+uint8 bCanPierce : 1;
+```
+![Pierce](Assets/Pierce.jpg)
