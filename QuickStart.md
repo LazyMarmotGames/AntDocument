@@ -254,3 +254,14 @@ Ant->GetAgentData(AgentHandle).FinalFaceAngle;
 uint8 bCanPierce : 1;
 ```
 ![piercing](Assets/piercing.jpg)
+
+### Q- Is it possible for an agent to find the nearest agent to itself without having to check the distance to all other agents? What would be the most efficient way to do this in terms of performance?
+
+**A**- squared distance of all queried agents is stored in FAntContactInfo::SqDist, you just need to find the smallest one from the result array.
+``` cpp
+MinSqDist = Results[0].SqDist;
+MinSqDistIdx = 0;
+for (...)
+  if (Results[idx] < MinSqDist)
+    { MinSqDist = Results[0].SqDist; MinSqDistIdx = idx;}
+```
