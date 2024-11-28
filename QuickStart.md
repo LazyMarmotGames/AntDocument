@@ -265,3 +265,35 @@ for (...)
   if (Results[idx] < MinSqDist)
     { MinSqDist = Results[0].SqDist; MinSqDistIdx = idx;}
 ```
+
+### Q- How do I deactivate the collision between agents?
+
+**A**- Each agent has two types of flags for collision manipulation.
+``` cpp 
+// 1- Agent flag (self)
+int32 Flag;
+// Access
+Ant->GetAgentFlag(AgentHandle);
+Ant->SetAgentFlag(AgentHandle);
+
+
+// 2- Ignoring other agents by this flag.
+int32 IgnoreFlag = 0;
+// Access
+Ant->GetAgentData(AgentHandle).IgnoreFlag;
+```
+Both are bit-field values. for example, suppose we have two types of units and we want to ignore the first type by the second type:
+``` cpp 
+const auto UnitFlagType_1 = 1 << 0;
+const auto UnitFlagType_2 = 1 << 1;
+
+// Setting the first type unit flag
+Ant->SetAgentFlag(FirstAgentHandle, UnitFlagType_1);
+
+// Setting the second type unit flag
+Ant->SetAgentFlag(SecondAgentHandle, UnitFlagType_2);
+
+// ignore UnitFlagType_2 by UnitFlagType_1 
+Ant->GetAgentData(FirstAgentHandle).IgnoreFlag = UnitFlagType_2;
+```
+This is a well-known method in most physics libraries for handling collisions, and with the right value at the right time, it can even handle complex situations.
