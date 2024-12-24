@@ -277,7 +277,7 @@ Ant->SetAgentFlag(AgentHandle);
 
 // 2- Ignoring other agents by this flag.
 // Access
-Ant->GetAgentMutableData(AgentHandle).IgnoreFlag = OtherAgentsFlag;
+Ant->GetMutableAgentData(AgentHandle).IgnoreFlag = OtherAgentsFlag;
 ```
 Both are bit-field values. for example, suppose we have two types of units and we want to ignore the first type by the second type:
 ``` cpp 
@@ -291,6 +291,6 @@ Ant->SetAgentFlag(FirstAgentHandle, UnitFlagType_1);
 Ant->SetAgentFlag(SecondAgentHandle, UnitFlagType_2);
 
 // ignore UnitFlagType_2 by UnitFlagType_1 
-Ant->GetAgentData(FirstAgentHandle).IgnoreFlag = UnitFlagType_2;
+Ant->GetMutableAgentData(FirstAgentHandle).IgnoreFlag = UnitFlagType_2;
 ```
 This is a well-known method in most physics libraries for handling collisions, and with the right value at the right time, it can even handle complex situations.
