@@ -268,19 +268,16 @@ for (...)
 
 ### Q- How do I deactivate the collision between agents?
 
-**A**- Each agent has two types of flags for collision manipulation.
+**A**- Each agent has two types of flags for collision manipulation. flags are 32-bit binary bitfields.
 ``` cpp 
-// 1- Agent flag (self)
-int32 Flag;
+// 1- Self agent flag
 // Access
 Ant->GetAgentFlag(AgentHandle);
 Ant->SetAgentFlag(AgentHandle);
 
-
 // 2- Ignoring other agents by this flag.
-int32 IgnoreFlag = 0;
 // Access
-Ant->GetAgentData(AgentHandle).IgnoreFlag;
+Ant->GetAgentMutableData(AgentHandle).IgnoreFlag = OtherAgentsFlag;
 ```
 Both are bit-field values. for example, suppose we have two types of units and we want to ignore the first type by the second type:
 ``` cpp 
