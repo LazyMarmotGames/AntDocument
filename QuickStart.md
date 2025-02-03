@@ -294,3 +294,48 @@ Ant->SetAgentFlag(SecondAgentHandle, UnitFlagType_2);
 Ant->GetMutableAgentData(FirstAgentHandle).IgnoreFlag = UnitFlagType_2;
 ```
 This is a well-known method in most physics libraries for handling collisions, and with the right value at the right time, it can even handle complex situations.
+
+### Q- How the ConvexVolume query works?
+
+**A**- Make sure the order of the points is correct.
+
+![piercing](Assets/ConvexVolume.jpg)
+
+test code:
+``` cpp 
+// Inside the Tick() function
+
+auto *ant = GetWorld()->GetSubsystem<UAntSubsystem>();
+TArray<FAntContactInfo> res;
+TStaticArray<FVector, 4> NearPlane;
+TStaticArray<FVector, 4> FarPlane;
+
+FarPlane[0] = { 500, 0, 0 };
+FarPlane[1] = { 500, 500, 0 };
+FarPlane[2] = { 0, 500, 0 };
+FarPlane[3] = { 0, 0, 0 };
+
+NearPlane[0] = { 500, 0, 1000 };
+NearPlane[1] = { 500, 500, 1000 };
+NearPlane[2] = { 0, 500, 1000 };
+NearPlane[3] = { 0, 0, 1000 };
+
+DrawDebugPoint(GetWorld(), NearPlane[0], 10, FColor::Red);
+DrawDebugPoint(GetWorld(), NearPlane[1], 10, FColor::White);
+DrawDebugPoint(GetWorld(), NearPlane[2], 10, FColor::Cyan);
+DrawDebugPoint(GetWorld(), NearPlane[3], 10, FColor::Green);
+
+DrawDebugPoint(GetWorld(), FarPlane[0], 10, FColor::Red);
+DrawDebugPoint(GetWorld(), FarPlane[1], 10, FColor::White);
+DrawDebugPoint(GetWorld(), FarPlane[2], 10, FColor::Cyan);
+DrawDebugPoint(GetWorld(), FarPlane[3], 10, FColor::Green);
+
+DrawDebugLine(GetWorld(), NearPlane[0], FarPlane[0], FColor::Black);
+DrawDebugLine(GetWorld(), NearPlane[1], FarPlane[1], FColor::Black);
+DrawDebugLine(GetWorld(), NearPlane[2], FarPlane[2], FColor::Black);
+DrawDebugLine(GetWorld(), NearPlane[3], FarPlane[3], FColor::Black);
+
+ant->QueryConvexVolume(NearPlane, FarPlane, -1, res);
+for (const auto &it : res)
+    ant->RemoveAgent(it.Handle);
+```
