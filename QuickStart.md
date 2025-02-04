@@ -314,3 +314,7 @@ Or if you have a box with a specific orientation:
 FarPlane[0] = NormalizedBoxDirection * BoxLength;
 ...
 ```
+Or directly from NearPlane:
+``` cpp
+FarPlane[0] = NormalizedNearPlaneDirection * BoxLength;
+```
