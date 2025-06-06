@@ -328,7 +328,7 @@ There are several reasons why your agents are experiencing lag/jitter while movi
   #### Solution: fix your frame rate! physical mechanics like movement and collisions are heavily dependent on frame/tick rate. Ant does its best to handle it internally, but a fixed frame rate makes it perfect!
 
 - Low collision tick rate.
-  #### Solution: you can increase the `Collision Tick Rate` in the `World Settings`, but a better and more efficient way is to activate the `Sub Step` system. it will lerp movements with highest possible rate wihtout needing to increase actual physic update rate!
+  #### Solution: you can increase the `Collision Tick Rate` in the `World Settings`, but a better and more efficient way is to activate the `Sub Step` system (Ver 2.5 and later). it will lerp movements with highest possible rate wihtout needing to increase actual physic update rate!
 
 - High `MaxOverlapForce`
   #### Solution: simply reduce the "MaxOverlapForce" value! (0.2 can be a good value, but it depends on the situation)
