@@ -295,6 +295,12 @@ Ant->GetMutableAgentData(FirstAgentHandle).IgnoreFlag = UnitFlagType_2;
 ```
 This is a well-known method in most physics libraries for handling collisions, and with the right value at the right time, it can even handle complex situations.
 
+### Q- How does `IgnoreButWakeUpFlag` work?
+
+**A**- Ignoring other agents but it will wake up ignored agents if a collision happens.
+
+![IgnoreButWakeup](Assets/IgnoreAwake.jpg)
+
 ### Q- How the ConvexVolume query works?
 
 **A**- Make sure the order of the points is correct.
