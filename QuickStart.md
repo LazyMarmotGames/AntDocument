@@ -329,7 +329,7 @@ FarPlane[0] = NormalizedNearPlaneDirection * BoxLength;
 ### Q- I experience lag/jitter when my agents move, what can I do?
 
 **A**- 
-There are several reasons why your agents are experiencing lag/jitter while moving:
+There are several reasons for this:
 
 - Uncapped frame rate. (most of the time)
   #### Solution: fix your frame rate! physical mechanics like movement and collisions are heavily dependent on frame/tick rate. Ant does its best to handle it internally, but a fixed frame rate makes it perfect!
