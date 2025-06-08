@@ -304,6 +304,7 @@ This is a well-known method in most physics libraries for handling collisions, a
 ### Q- How the ConvexVolume query works?
 
 **A**- Make sure the order of the points is correct.
+
 Note: FarPlane is offset/delta from NearPlane:
 
 ![piercing](Assets/ConvexVolume.jpg)
