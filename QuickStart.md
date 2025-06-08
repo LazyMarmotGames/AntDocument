@@ -326,7 +326,7 @@ Or directly from NearPlane:
 FarPlane[0] = NormalizedNearPlaneDirection * BoxLength;
 ```
 
-### Q- I experience lag/jitter when my agents move, what can I do??
+### Q- I experience lag/jitter when my agents move, what can I do?
 
 **A**- 
 There are several reasons why your agents are experiencing lag/jitter while moving:
