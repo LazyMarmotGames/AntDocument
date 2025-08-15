@@ -97,7 +97,7 @@ or cancel/remove an in-progress movement:
 Ant->RemoveAgentMovement(AgentHandle);
 ```
 ### Path Follower Types
-There are different ways to move an agent along a path. in **Ant** we define it through `EAntPathFollowerType`. at the there are two types of path follower:
+There are different ways to move an agent along a path. in **Ant** we define it through `EAntPathFollowerType`. there are two types of path follower:
 
 **1- Waypoint**
 
@@ -339,3 +339,4 @@ There are several reasons for this:
 
 - High `MaxOverlapForce`
   #### Solution: simply reduce the `MaxOverlapForce` value! (0.2 can be a good value, but it depends on your game)
+
